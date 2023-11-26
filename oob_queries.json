@@ -1,0 +1,14 @@
+[
+    {
+        "name":"summary",
+        "details": "quickly generate a summary of the content in 300 chinese chracters. Make it easy to understand but do not make up stories. If the content is written in English, please translate it into Chinese. "
+    },
+    {   
+        "name":"knowledge_points",
+        "details":"Quickly generate a string containing the main key points of context with from 3 to 5 bullet points in Chinese.The key poinrts should not be very related to the summary of the context. Each bullet starts with an unique emoji, which may fit its meaning, and is followed by the point. The emoji should be HTML-friendly and javascript-friendly. Combine the emoji and the point as a single text string without any separator. Please embrace  each item (emoji+point) with html tag <p> and </p>. The bullet should never be related the wechat source of the context."
+    },
+    {
+        "name":"oob_questions",
+        "details":"Quickly generate a string containing three questions in chinese.These questions can be answered by reading the context.  The questions are connected by symbo '|', so its format is '问题1|问题2|问题3'. The question should never be related the wechat source of the context."
+    }
+]

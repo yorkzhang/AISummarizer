@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>欢迎使用微信文章小助理！</title>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/foundation/6.6.3/css/foundation-float.min.css"
+        crossorigin="anonymous" />
+
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: "Microsoft Yahei", sans-serif;
+            color: #333;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Microsoft Yahei", sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            font-family: "Microsoft Yahei", sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .container {
+            margin-top: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 15px;
+            padding-right: 15px;
+            text-align: center;
+        }
+
+        #result {
+            margin-top: 50px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .form-group label {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .form-control {
+            border-radius: 0;
+            border-color: #ced4da;
+            width: 80%;
+            margin: 0 auto;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .form-control:focus {
+            color: #495057;
+            background-color: #fff;
+            border-color: #3498db;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+        .button.is-primary {
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            background-color: #00bfff;
+            border-color: #00bfff;
+            width: 50%;
+            margin: 0 auto;
+            display: block;
+            border-width: 2px;
+            padding: 0.5rem 1.5rem;
+            position: relative;
+        }
+
+        .button.is-primary:hover {
+            background-color: #00a5e5;
+            border-color: #00a5e5;
+        }
+
+        .text-muted {
+            color: #6c757d;
+        }
+
+        .bullets {
+            margin-top: 1rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #333;
+            text-align: left;
+            display: none;
+        }
+
+        .question-link {
+            display: block;
+            margin-top: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #333;
+        }
+
+        .answer {
+            margin-top: 1rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .mt-3 {
+            margin-top: 1rem;
+        }
+
+        audio {
+            margin-top: 1rem;
+            display: block;
+        }
+
+        /* 添加手机端样式 */
+        @media (max-width: 576px) {
+            .container {
+                margin-top: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            #result {
+                margin-top: 20px;
+            }
+
+            .form-control {
+                font-size: 14px;
+                width: 100%;
+                padding: 0.8rem;
+            }
+
+            .button.is-primary {
+                font-size: 14px;
+                padding: 5px 10px;
+                margin-top: 20px;
+                width: 100%;
+            }
+
+            .bullets {
+                font-size: 14px;
+            }
+
+            .question-link {
+                font-size: 14px;
+                margin-top: 10px;
+            }
+
+            .answer {
+                font-size: 14px;
+                margin-top: 10px;
+            }
+        }
+
+        /* 修改颜色主题和字体 */
+        body {
+            background-color: #f2f2f2;
+            font-family: "Microsoft Yahei", sans-serif;
+            color: #333;
+        }
+
+        .button.is-primary {
+            background-color: #00bfff;
+            border-color: #00bfff;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Microsoft Yahei", sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #333;
+        }
+
+        .button.is-primary:hover {
+            background-color: #00a5e5;
+            border-color: #00a5e5;
+        }
+
+        #knowledge-btn,
+        #read-btn {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        /* 新增的样式 */
+        .button.is-primary.loading {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .button.is-primary.loading::after {
+            content: "";
+            display: block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            margin: -8px 0 0 -8px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .button.is-primary.loading::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 10px;
+            border: 2px solid #fff;
+            z-index: -1;
+        }
+
+        /* 新增的样式 */
+        #knowledge-div.loading,
+        #audio-player.loading {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        #knowledge-div.loading::after,
+        #audio-player.loading::after {
+            content: "";
+            display: block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            margin: -8px 0 0 -8px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        #knowledge-div.loading::before,
+        #audio-player.loading::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 10px;
+            border: 2px solid #fff;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/botui/0.3.9/botui.min.css"
+        integrity="sha512-EQZJtWFbq1+VUd3w2SSmEcw5C1oJKTZYAzm+C0EIYD64RzTZdvVqQxuie1fjVYRJwXJNVZO0krtzuumAePYJeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/botui/0.3.9/botui-theme-default.css"
+        integrity="sha512-tVPkSkiVpA7I90WAc0GJM1gJArWQi5VnXu+sZgdrv37OdavH/f4tuzt1xoiSMLmrsGXFc436GIGSTmtgt/g8/A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/vue/2.0.5/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/botui/0.3.9/botui.min.js"
+        integrity="sha512-bNmR6iUALbINoa+g8d7CnUtMscklrbt5aVtOOTru4oCAiDwVkvR74uCwxKoWsvbH1yuo7Nfg67AUFgLvPMBAWg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="title is-1 has-text-centered">欢迎使用微信文章小助理！</h1>
+            <form>
+                <div class="field">
+                    <p class="help is-danger" id="urlHelp">请输入微信公众号文章地址</p>
+                    <div class="control">
+                        <input type="text" class="input is-large" id="urlInput" placeholder="URL" />
+                    </div>
+
+                </div>
+                <button type="submit" class="button is-primary" onclick="submitForm(event)">
+                    <span>提交</span>
+                </button>
+            </form>
+            <div id="title" class="has-text-centered mt-3"></div>
+            <div id="result"></div>
+        </div>
+    </section>
+
+
+    <script>
+        function submitForm(event) {
+            event.preventDefault();
+            var urlInput = document.getElementById("urlInput");
+            var url = urlInput.value;
+            var urlHelp = document.getElementById("urlHelp");
+            if (!isValidUrl(url)) {
+                urlHelp.innerText = "请输入有效的微信公众号地址";
+                return;
+            }
+            var submitBtn = document.querySelector("button[type=submit]");
+            submitBtn.classList.add("loading");
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/dbinit");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        askTitle(url);
+                    } else {
+                        urlHelp.innerText = "发生错误请重试";
+                    }
+
+                }
+            };
+            xhr.send(JSON.stringify({ url: url }));
+        }
+
+        function askTitle(url) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/gettitle");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var result = xhr.responseText;
+                        var titleDiv = document.getElementById("title");
+                        titleDiv.innerHTML = "<h2 class='title is-2'>" + result + "</h2>";
+                        askSummary(url);
+                    } else {
+                        urlHelp.innerText = "发生错误请重试";
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        function askSummary(url) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/ask");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var result = xhr.responseText;
+                        var resultDiv = document.getElementById("result");
+                        resultDiv.innerHTML = "<p class='lead'>" + result + "</p>" +
+                            '<div class="container text-center mt-5" style="display: flex;">' +
+                            '<button id="knowledge-btn" class="button is-primary">点击获取知识点</button>' +
+                            '<button id="read-btn" class="button is-primary ml-3">朗读这篇总结文字</button>' +
+                            '<button id="chat-btn" class="button is-primary ml-3">针对微信文章开始聊天</button>' +
+                            '</div>' +
+                            '<div><audio id="audio-player" controls style="display: none;"></audio></div>' +
+                            '<div id="knowledge-div">'
+                            + '</div>'
+                            + '<div id="my-botui-app"> <bot-ui></bot-ui></div>';
+
+                        var knowledgeBtn = document.getElementById("knowledge-btn");
+                        knowledgeBtn.onclick = function () {
+                            knowledgeBtn.classList.add("loading");
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("POST", "/ask");
+                            xhr.setRequestHeader("Content-Type", "application/json");
+                            var knowledgeDiv = document.getElementById("knowledge-div");
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4) {
+                                    if (xhr.status === 200) {
+                                        var result = xhr.responseText;
+                                        knowledgeBtn.classList.remove("loading");
+                                        knowledgeDiv.className = "bullets";
+                                        knowledgeDiv.innerHTML = result;
+                                        knowledgeDiv.style.display = "block";
+                                    } else {
+                                        console.log("error");
+                                    }
+                                }
+                            };
+                            xhr.send(JSON.stringify({ queryname: "knowledge_points", isOOB: "true" }));
+                        };
+                        var readBtn = document.getElementById("read-btn");
+                        readBtn.onclick = function () {
+                            readBtn.classList.add("loading");
+                            audioPlayer = document.getElementById("audio-player");
+                            audioPlayer.style.display = 'block';
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("POST", "/text-to-speech");
+                            xhr.setRequestHeader("Content-Type", "application/json");
+                            var audioPlayer = document.getElementById("audio-player");
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4) {
+                                    if (xhr.status === 200) {
+                                        readBtn.classList.remove("loading");
+                                        audioPlayer = document.getElementById("audio-player");
+                                        audioPlayer.src = URL.createObjectURL(xhr.response);
+                                        audioPlayer.play();
+                                    } else {
+                                        console.log("text to speech error");
+                                    }
+                                }
+                            };
+                            xhr.responseType = "blob";
+                            xhr.send(JSON.stringify({ text: result, url: url }));
+                        };
+                        var chatBtn = document.getElementById("chat-btn");
+                        chatBtn.onclick = function () {
+                            questions = [];
+                            chatBtn.classList.add("loading");
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("POST", "/ask");
+                            xhr.setRequestHeader("Content-Type", "application/json");
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4) {
+                                    if (xhr.status === 200) {
+                                        var result = xhr.responseText;
+                                        questions = result.split("|");
+                                        chatBtn.classList.remove("loading");
+                                        handleChat(questions)
+                                    } else {
+                                        console.log("error");
+                                    }
+                                }
+                            };
+                            xhr.send(JSON.stringify({ queryname: "oob_questions", isOOB: "true" }));
+                        }
+                    }
+
+
+                    var submitBtn = document.querySelector("button[type=submit]");
+                    submitBtn.classList.remove("loading");
+                } else {
+                    if (xhr.readyState === 4 && xhr.status !== 200) {
+                        urlHelp.innerText = "数据发送错误，请重试";
+                    }
+                }
+            }
+            xhr.send(JSON.stringify({ queryname: "summary", isOOB: "true" }));
+        };
+
+
+        function isValidUrl(url) {
+            var pattern = new RegExp(
+                "^(https?:\\/\\/)?" + // protocol
+                "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))" + // domain name
+                "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+                "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+                "(\\#[-a-z\\d_]*)?$",
+                "i"
+            ); // fragment locator
+            return !!pattern.test(url);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var form = document.querySelector("form");
+            form.addEventListener("submit", submitForm);
+        });
+
+        function handleChat(questions) {
+            var botui = new BotUI('my-botui-app');
+            var selectedButton = ""
+            botui.message.add({
+                content: '您好，欢迎向提问关于这篇文章的内容。可以从我给出的问题里选择，也可以自己提出问题。'
+            });
+            askQuestion();
+            function askQuestion() {
+                botui.action.button({
+                    delay: 1000,
+                    addMessage: true,
+                    placeholder: '请输入您的问题',
+                    action: [{
+                        text: questions[0],
+                        value: questions[0]
+                    }, {
+                        text: questions[1],
+                        value: questions[1]
+                    }, {
+                        text: questions[2],
+                        value: questions[2]
+                    },
+                    {
+                        text: "我自己提问",
+                        value: 'others'
+                    }]
+                }).then(function (res) {
+                    if (res.value === 'others') {
+                        return botui.action.text({
+                            action: {
+                                placeholder: '请输入您的问题'
+                            }
+                        })
+
+                            .then(function (res2) {
+                                selectedButton = res2.value;
+                                answer();
+                            })
+                    }
+                    else {
+                        selectedButton = res.value;
+                        answer();
+                    }
+
+                }
+                )
+            }
+
+
+            function answer() {
+                botui.message.add({
+                    content: selectedButton,
+                    loading: true
+                });
+                return fetch('/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        query: selectedButton,
+                        isOOB: false
+                    })
+                }).then(function (res) {
+                    return res.text();
+                }).then(function (data) {
+                    botui.message.remove(-1); // 删除加载状态消息
+                    botui.message.add({
+                        content: data
+                    });
+                    return askQuestion(); // 在回答完问题后，自动提示用户输入新问题
+                }).catch(function (error) {
+                    console.log(error);
+                    botui.message.add({
+                        content: '对不起，出了一点问题，请稍后再试。'
+                    });
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
